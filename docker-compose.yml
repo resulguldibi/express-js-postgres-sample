@@ -1,0 +1,22 @@
+version: "3"
+services:
+  postgres:
+    image: "postgres:11"
+    container_name: "postgres"
+    ports:
+      - "5432:5432"
+    volumes:      
+      - ./init.sh:/docker-entrypoint-initdb.d/create_tables.sh
+    environment:
+      POSTGRES_PASSWORD: pwd123
+      POSTGRES_USER: postgresuser    
+  express-api:
+    image: resulguldibi/express-js-postgres-sample
+    container_name: express-api
+    restart: always
+    depends_on:
+      - postgres      
+    links:
+      - postgres  
+    ports:
+      - 8080:8080
